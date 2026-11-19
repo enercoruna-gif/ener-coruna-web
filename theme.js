@@ -49,6 +49,41 @@
     else show("clinica");
   }
 
+  var localTabs = document.querySelectorAll("[data-local-tab]");
+  var localPanels = document.querySelectorAll("[data-local-panel]");
+  if (localTabs.length) {
+    function showLocal(id) {
+      localTabs.forEach(function (tab) {
+        var selected = tab.getAttribute("data-local-tab") === id;
+        tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      localPanels.forEach(function (item) { item.hidden = item.getAttribute("data-local-panel") !== id; });
+    }
+    localTabs.forEach(function (tab, index) {
+      tab.addEventListener("click", function () { showLocal(tab.getAttribute("data-local-tab")); });
+      tab.addEventListener("keydown", function (event) {
+        var next = index;
+        if (event.key === "ArrowRight") next = (index + 1) % localTabs.length;
+        else if (event.key === "ArrowLeft") next = (index + localTabs.length - 1) % localTabs.length;
+        else if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = localTabs.length - 1;
+        else return;
+        event.preventDefault();
+        localTabs[next].click();
+        localTabs[next].focus();
+      });
+    });
+    function localHash() {
+      var id = (location.hash || "").slice(1);
+      var known = Array.prototype.some.call(localTabs, function (tab) { return tab.getAttribute("data-local-tab") === id; });
+      if (known) showLocal(id);
+    }
+    showLocal(localTabs[0].getAttribute("data-local-tab"));
+    localHash();
+    window.addEventListener("hashchange", localHash);
+  }
+
   var form = document.getElementById("form-contacto");
   if (form) {
     form.addEventListener("submit", function (e) {
