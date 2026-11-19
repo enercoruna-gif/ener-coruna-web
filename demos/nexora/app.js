@@ -37,6 +37,7 @@ menu.addEventListener('click', () => {
   menu.setAttribute('aria-expanded', String(open));
   menu.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
   nav.classList.toggle('open', open);
+  if (open) nav.querySelector('a').focus();
 });
 function closeMenu() {
   nav.classList.remove('open');
