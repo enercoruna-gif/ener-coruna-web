@@ -55,10 +55,14 @@
       e.preventDefault();
       var d = new FormData(form);
       var nombre = (d.get("nombre") || "").toString().trim();
+      var email = (d.get("email") || "").toString().trim();
+      var telefono = (d.get("telefono") || "").toString().trim();
       var sector = (d.get("sector") || "").toString().trim();
       var mensaje = (d.get("mensaje") || "").toString().trim();
       var text = "Hola, vengo de la web de Enercoruña. Quiero un diagnóstico gratuito";
       if (nombre) text += ". Soy " + nombre;
+      if (email) text += ". Email: " + email;
+      if (telefono) text += ". Teléfono: " + telefono;
       if (sector) text += ". Sector: " + sector;
       if (mensaje) text += ". " + mensaje;
       window.location.href = "https://wa.me/34608176024?text=" + encodeURIComponent(text);
